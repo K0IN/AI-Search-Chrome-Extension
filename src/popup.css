@@ -1,0 +1,49 @@
+html {
+    --background-color: #ffffff;
+    --text-color: #000000;
+    width: 100%;
+}
+
+@media (prefers-color-scheme: dark) {
+    html {
+        --background-color: #202124;
+        --text-color: #E8EAED;    
+    }
+}
+
+html, body {
+    padding: 0px;
+    margin: 0px;
+}
+
+body {    
+    width: 100%;
+    background-color: var(--background-color);
+    color: var(--text-color);
+}
+
+body * {
+    background-color: var(--background-color);
+    color: var(--text-color);
+}
+
+.searchBoxFirstLine {
+    margin: 10px 10px 10px 10px;
+    display: flex;
+	flex-direction: row;
+}
+
+input, button, span {
+    padding: 0;
+    border: none;
+    background: none;
+}
+
+input:focus {
+    outline: none;
+}
+
+p {
+    margin: 0;
+    padding: 10px;
+}

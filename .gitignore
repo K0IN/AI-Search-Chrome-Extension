@@ -1,0 +1,14 @@
+# dependencies
+node_modules
+
+# production
+build
+
+# misc
+.DS_Store
+size-plugin.json
+npm-debug.log*
+
+# AI-Model
+public/model/
+!public/model/readme.md
