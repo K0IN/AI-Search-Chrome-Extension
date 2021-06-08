@@ -1,3 +1,5 @@
+let boxes = [];
+
 const getBoxes = (textNode) => {
     const range = document.createRange();
     range.selectNodeContents(textNode);
@@ -23,13 +25,25 @@ const createBox = (rect) => {
     return overlayDiv;
 }
 
+const updateOverlay = () => {
+    document.querySelectorAll('._ai_search_overlay').forEach(e => e.remove());
+    boxes.map(textNode => getBoxes(textNode).map((rect) => createBox(rect)).map(div => document.body.appendChild(div)));
+}
+
 const addOverlay = (textNode) => {
-    getBoxes(textNode).map((rect) => createBox(rect)).map(div => document.body.appendChild(div));
+    boxes.push(textNode);
+    updateOverlay();
 }
 
 const clearOverlays = () => {
-    document.querySelectorAll('._ai_search_overlay').forEach(e => e.remove());
+    boxes = []
+    updateOverlay();
 }
+
+window.addEventListener("resize", () => {
+    console.log("update");
+    updateOverlay();
+});
 
 const scrollToElement = (element) => {
     element && element.scrollIntoView({
