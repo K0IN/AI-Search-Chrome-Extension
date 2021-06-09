@@ -84,18 +84,22 @@ class App extends Component {
     }
 
     render(props, state) {
+        const isDarkMode = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+
         return html`            
             <div class="searchBoxFirstLine">
                 <button onClick=${()=> this.setState({ isExpanded: !state.isExpanded })}>
-                    <img src=${state.isExpanded ? "icons/expand_less_white.svg" : "icons/expand_more_white.svg"} />
+                    <img src=${ state.isExpanded ? 
+                        (isDarkMode ? "icons/expand_less_white.svg" : "icons/expand_less_black.svg") :
+                        (isDarkMode ? "icons/expand_more_white.svg" : "icons/expand_more_black.svg")} />
                 </button>
             
                 <input type="text" value=${state.searchTerm} onkeyup=${(e)=> this.updateSearchTerm(e)}/>
-                <button onClick=${()=> this.last()}><img src="icons/navigate_before_white.svg" /></button>
-                <button onClick=${()=> this.next()}><img src="icons/navigate_next_white.svg" /></button>
+                <button onClick=${()=> this.last()}><img src=${isDarkMode ? "icons/navigate_before_white.svg" : "icons/navigate_before_black.svg"} /></button>
+                <button onClick=${()=> this.next()}><img src=${isDarkMode ? "icons/navigate_next_white.svg" : "icons/navigate_next_black.svg"} /></button>
                 <span>${state.currentSelected + 1}/${state.searchResult.length}</span>
             
-                <button onClick=${()=> this.close()}><img src="icons/close_white.svg" /></button>
+                <button onClick=${()=> this.close()}><img src=${isDarkMode ? "icons/close_white.svg" : "icons/close_black.svg"} /></button>
             
             </div>
             <div>${state.loading ? "loading" : ""}</div>

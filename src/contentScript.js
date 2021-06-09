@@ -40,10 +40,7 @@ const clearOverlays = () => {
     updateOverlay();
 }
 
-window.addEventListener("resize", () => {
-    console.log("update");
-    updateOverlay();
-});
+window.addEventListener("resize", () => updateOverlay());
 
 const scrollToElement = (element) => {
     element && element.scrollIntoView({
