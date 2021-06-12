@@ -1,4 +1,6 @@
 let boxes = [];
+let overlayColor = "#ff0000"
+let scrollBehavior = "auto"
 
 const getBoxes = (textNode) => {
     const range = document.createRange();
@@ -15,7 +17,7 @@ const createBox = (rect) => {
     overlayDiv.className = `_ai_search_overlay`;
     overlayDiv.style.zIndex = 9999;
     overlayDiv.style.position = `absolute`;
-    overlayDiv.style.border = `1px solid red`;
+    overlayDiv.style.border = `1px solid ${overlayColor}`;
     overlayDiv.style.margin = overlayDiv.style.padding = "0";
     overlayDiv.style.top = `${rect.top + scrollTop}px`;
     overlayDiv.style.left = `${rect.left + scrollLeft}px`;
@@ -44,7 +46,7 @@ window.addEventListener("resize", () => updateOverlay());
 
 const scrollToElement = (element) => {
     element && element.scrollIntoView({
-        behavior: 'auto',
+        behavior: scrollBehavior,
         block: 'center',
         inline: 'center'
     });
@@ -65,11 +67,16 @@ const isWhiteSpaceNode = (node) => {
     return !isHidden(node.parentElement);
 }
 
-const highlight = (data) => {
-    if(!data) {
+const highlight = (data, color, scrollType) => {
+
+    if (!data) {
         console.warn("no highlight data provided!")
         return;
     }
+
+    overlayColor = color;
+    scrollBehavior = scrollType;
+
     const { startIndex, endIndex, score, text } = data;
 
     console.log("highlighting", { startIndex, endIndex, score, text })
@@ -79,17 +86,17 @@ const highlight = (data) => {
 
     const matches = [];
     const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, null);
- 
+
     while (currentNode = walker.nextNode()) {
         if (isWhiteSpaceNode(currentNode)) continue;
-        const nodeValue = currentNode.nodeValue.trim(); 
+        const nodeValue = currentNode.nodeValue.trim();
         const startLength = length;
         length += nodeValue.length + 1;
-        
+
         // todo: split matching text nodes to match the precise text
         // node.splitText(3);
 
-        if (length > startIndex) {         
+        if (length > startIndex) {
             matches.push(currentNode);
         }
 
@@ -113,7 +120,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 
     switch (type) {
         case "HIGHLIGHT":
-            highlight(data);
+            highlight(data, request.color, request.scroll);
             break;
 
         case "REMOVEHIGHLIGHT":

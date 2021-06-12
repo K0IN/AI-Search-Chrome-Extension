@@ -4,7 +4,7 @@ import './popup.css';
 
 const highlight = async (data) => {
     const tabs = await chrome.tabs.query({ active: true, currentWindow: true });
-    return await chrome.tabs.sendMessage(tabs[0].id, { type: "HIGHLIGHT", data });
+    return await chrome.tabs.sendMessage(tabs[0].id, { type: "HIGHLIGHT", data, color: localStorage.color || "#ff0000", scroll: localStorage.scroll || "auto" });
 }
 
 const removeHighlight = async () => {
@@ -24,7 +24,7 @@ class App extends Component {
             searchTerm: localStorage.lastSearchTerm || "",
             isExpanded: false,
             loading: false,
-            currentSelected: 0, // todo restore this at some point
+            currentSelected: 0,
             searchResult: []
         };
     }
@@ -39,7 +39,7 @@ class App extends Component {
     async updateSearchTerm(event) {
 
         this.setState({ searchTerm: event.target.value });
-        localStorage.lastSearchTerm = event.target.value; // todo put this somewhere else
+        localStorage.lastSearchTerm = event.target.value;
 
         if (event.key === 'Enter') {
             event.preventDefault();
@@ -92,15 +92,12 @@ class App extends Component {
                     <img src=${ state.isExpanded ? 
                         (isDarkMode ? "icons/expand_less_white.svg" : "icons/expand_less_black.svg") :
                         (isDarkMode ? "icons/expand_more_white.svg" : "icons/expand_more_black.svg")} />
-                </button>
-            
+                </button>            
                 <input type="text" value=${state.searchTerm} onkeyup=${(e)=> this.updateSearchTerm(e)}/>
                 <button onClick=${()=> this.last()}><img src=${isDarkMode ? "icons/navigate_before_white.svg" : "icons/navigate_before_black.svg"} /></button>
                 <button onClick=${()=> this.next()}><img src=${isDarkMode ? "icons/navigate_next_white.svg" : "icons/navigate_next_black.svg"} /></button>
-                <span>${state.currentSelected + 1}/${state.searchResult.length}</span>
-            
-                <button onClick=${()=> this.close()}><img src=${isDarkMode ? "icons/close_white.svg" : "icons/close_black.svg"} /></button>
-            
+                <span>${state.currentSelected + 1}/${state.searchResult.length}</span>            
+                <button onClick=${()=> this.close()}><img src=${isDarkMode ? "icons/close_white.svg" : "icons/close_black.svg"} /></button>            
             </div>
             <div>${state.loading ? "loading" : ""}</div>
             <div>${(state.isExpanded && state.searchResult) ? state.searchResult.map(e => html`<p>${e.text}</p>`) : ""}</div>

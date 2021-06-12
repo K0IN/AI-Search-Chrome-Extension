@@ -117,7 +117,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     switch (type) {
         case "QUESTION":
             const { searchTerm } = data;
-            runQuestion(searchTerm).then((answers) => sendResponse(answers)).catch((error) => sendResponse([])); // todo error logging
+            runQuestion(searchTerm).then((answers) => sendResponse(answers)).catch((error) => sendResponse([]));
             break;
 
         default:
