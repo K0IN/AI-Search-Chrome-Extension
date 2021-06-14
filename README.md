@@ -19,6 +19,10 @@ Use google's [Bert](https://en.wikipedia.org/wiki/BERT_(language_model)) to sear
 [Preact](https://preactjs.com/) with [HTM](https://github.com/developit/htm) for frontend (Popup)
 Tensorflow.js and [TF-qna](https://github.com/tensorflow/tfjs-models/tree/master/qna) (Backend)
 
+## install prebuilt binaries
+
+go to `chrome://extensions/` and enable dev mode then unpack the zip and choose the build folder
+
 ## Contribution
 
 This project was bootstrapped with [Chrome Extension CLI](https://github.com/dutiyesh/chrome-extension-cli)
